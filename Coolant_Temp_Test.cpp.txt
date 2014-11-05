@@ -1,4 +1,4 @@
-#include "mbed.h"
+//need to add Fat File System and USBHostLite folders, MSCFileSystem.cpp and MSCFileSystem.h
 #include "cmath"
 #include "MSCFileSystem.h"
 #define FSNAME "msc"
