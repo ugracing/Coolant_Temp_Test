@@ -1,0 +1,42 @@
+#include "mbed.h"
+#include "cmath"
+#include "MSCFileSystem.h"
+#define FSNAME "msc"
+
+float temp(float value){
+    float t = ((1/((0.0009404849219921952)+((0.000239245801500490)*(log(((49500/(value*3.3))-15000))))+((0.00000012708217191349288)*((log(((49500/(value*3.3))-15000)))*(log(((49500/(value*3.3))-15000)))*(log(((49500/(value*3.3))-15000)))))))-273);
+    return t;
+}
+
+/* converts the analog in value from the thermister (0-1) into the temperature in Celsius.                                 | 3.3V
+   Potentential divider circuit using a 15k resistor in series with the thermister                                         [] t
+   and using the 3.3V supply from the mbed as the supply voltage. The thermister is                                        | ------> analog in
+   connected to the 3.3V and then in series to the 15k resistor which is then connected                                    [] 15k
+   to ground. The ananlog in signal is taken from the between the thermister and resistor                                  | ground 
+   Circuit is shown on the right! */
+
+AnalogIn Tin(p16);
+AnalogIn Tout(p17);
+DigitalIn stop(p18);
+Serial pc(USBTX, USBRX);
+MSCFileSystem msc("msc");                                       //USB file
+
+int main(){
+    
+    FILE *fp = fopen( "/msc/data.txt", "w");                    //open USB file
+
+    while (1) {
+
+        pc.printf("Temp In\t\t\tTemp Out\n\r");
+        pc.printf("%.1f\370C\t\t\t%.1f\370C\n\r",temp(Tin), temp(Tout)); 
+        fprintf(fp,"Temp In\t\t\tTemp Out\n\r");
+        fprintf(fp,"%.1f\370C\t\t\t%.1f\370C\n\r",temp(Tin), temp(Tout));
+        wait (0.5);                                                                     //how often the reading is taken
+        
+        if(stop==1){
+            fclose(fp);
+            break;
+        }                                                             
+
+    }
+}
