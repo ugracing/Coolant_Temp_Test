@@ -29,7 +29,7 @@ int main(){
 
         pc.printf("Temp In\t\t\tTemp Out\n\r");
         pc.printf("%.1f\370C\t\t\t%.1f\370C\n\r",temp(Tin), temp(Tout)); 
-        fprintf(fp,"Temp In\t\t\tTemp Out\n\r");
+        fprintf(fp,"Temp In\t\t\tTemp Out\n\r");					//log file to USB
         fprintf(fp,"%.1f\370C\t\t\t%.1f\370C\n\r",temp(Tin), temp(Tout));
         wait (0.5);                                                                     //how often the reading is taken
         
