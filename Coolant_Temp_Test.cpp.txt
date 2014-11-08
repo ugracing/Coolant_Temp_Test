@@ -24,13 +24,12 @@ MSCFileSystem msc("msc");                                       //USB file
 int main(){
     
     FILE *fp = fopen( "/msc/data.txt", "w");                    //open USB file
-
+    fprintf(fp,"Temp In\tTemp Out\n\r");			//moved to here from main loop so column names are only written once in log file
     while (1) {
 
         pc.printf("Temp In\t\t\tTemp Out\n\r");
         pc.printf("%.1f\370C\t\t\t%.1f\370C\n\r",temp(Tin), temp(Tout)); 
-        fprintf(fp,"Temp In\t\t\tTemp Out\n\r");
-        fprintf(fp,"%.1f\370C\t\t\t%.1f\370C\n\r",temp(Tin), temp(Tout));
+        fprintf(fp,"%.1f\370C\t%.1f\370C\n\r",temp(Tin), temp(Tout));
         wait (0.5);                                                                     //how often the reading is taken
         
         if(stop==1){
